@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Calculator</title>
+</head>
+<body>
+    <h1>Interest Calculator</h1>
+    <form method="POST">
+        <label for="principal">Principal Amount:</label>
+        <input type="number" step="any" name="principal" required><br>
+
+        <label for="rate">Rate of Interest (%):</label>
+        <input type="number" step="any" name="rate" required><br>
+
+        <label for="time">Time (in years):</label>
+        <input type="number" step="any" name="time" required><br>
+
+        <label for="interest_type">Interest Type:</label>
+        <select name="interest_type" onchange="toggleCompoundFields(this)">
+            <option value="simple">Simple Interest</option>
+            <option value="compound">Compound Interest</option>
+        </select><br>
+
+        <div id="compound-fields" style="display:none;">
+            <label for="times_compounded">Times Compounded per Year:</label>
+            <input type="number" name="times_compounded"><br>
+        </div>
+        
+        <button type="submit">Calculate</button>
+    </form>
+
+    <div>
+        {% if result is not none %}
+            {% if result.total_amount is defined %}
+                <p>Total Amount (A): {{ result.total_amount }}</p>
+                <p>Compound Interest: {{ result.interest_earned }}</p>
+            {% else %}
+                <p>Simple Interest: {{ result }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+    function toggleCompoundFields(select) {
+        document.getElementById('compound-fields').style.display = select.value === 'compound' ? 'block' : 'none';
+    }
+    </script>
+</body>
+</html>
